@@ -1,0 +1,178 @@
+{
+  "name": "snapcut",
+  "version": "1.0.0",
+  "description": "Snapcut",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --inspect=9229",
+    "dev": "electron . --disable-gpu --disable-accelerated-video-decode --disable-accelerated-video-encode --disable-software-rasterizer --inspect=9229",
+    "build": "electron-builder",
+    "build:dev": "electron-builder --dir",
+    "build:win": "electron-builder --win",
+    "build:win-portable": "electron-builder --win portable",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "rebuild": "electron-rebuild -f -w sharp",
+    "postinstall": "electron-builder install-app-deps",
+    "verify": "node -e \"try { console.log('✅ ONNX Runtime:', require('onnxruntime-node').version); console.log('✅ Sharp:', require('sharp').versions); } catch(e) { console.error('❌ Error:', e.message); }\"",
+    "clean": "rm -rf dist build node_modules",
+    "clean:dist": "rm -rf dist",
+    "clean:build": "rm -rf build",
+    "package": "npm run rebuild && npm run build"
+  },
+  "keywords": [
+    "remove",
+    "background",
+    "ai",
+    "birefnet",
+    "cpu",
+    "image-processing",
+    "onnx",
+    "electron"
+  ],
+  "author": "Danishtzy24",
+  "license": "MIT",
+  "dependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.6.4",
+    "electron-rebuild": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "build": {
+    "appId": "com.snapcut.app",
+    "productName": "SnapCut",
+    "copyright": "Copyright © 2025 Danishtzy24",
+    "directories": {
+      "output": "dist",
+      "app": ".",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "Logo.ico",
+      "models_Ai/**/*",
+      "node_modules/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples,benchmark}",
+      "!**/node_modules/*.d.ts",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml,.github}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json,package-lock.json}",
+      "!dist/**/*",
+      "!build/**/*",
+      "!**/.cache/**/*",
+      "!**/temp/**/*",
+      "!**/logs/**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/sharp/**/*",
+      "models_Ai/**/*",
+      "preload.js",
+      "main.js"
+    ],
+    "extraResources": [
+      {
+        "from": "models_Ai",
+        "to": "models_Ai",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "Logo.ico",
+      "certificateFile": null,
+      "certificatePassword": null,
+      "verifyUpdateCodeSignature": false,
+      "publisherName": "Danishtzy24",
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "requestedExecutionLevel": "asInvoker",
+      "rfc3161TimeStampServer": "http://timestamp.digicert.com"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SnapCut",
+      "perMachine": false,
+      "installerIcon": "Logo.ico",
+      "uninstallerIcon": "Logo.ico",
+      "installerHeaderIcon": "Logo.ico"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-${arch}-portable.exe",
+      "requestExecutionLevel": "user"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.graphics-design",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "identity": null
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "icon": "assets/icon.png",
+      "category": "Graphics",
+      "maintainer": "Danishtzy24"
+    },
+    "appImage": {
+      "synopsis": "AI Background Removal Tool",
+      "category": "Graphics"
+    },
+    "deb": {
+      "depends": [
+        "libgtk-3-0",
+        "libnotify4",
+        "libnss3",
+        "libxss1",
+        "libxtst6",
+        "xdg-utils",
+        "libatspi2.0-0",
+        "libuuid1",
+        "libappindicator3-1",
+        "libsecret-1-0"
+      ]
+    },
+    "npmRebuild": false,
+    "nodeGypRebuild": false,
+    "buildDependenciesFromSource": true
+  }
+}
